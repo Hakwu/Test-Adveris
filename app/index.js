@@ -1,16 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View,TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image } from "react-native";
 import { useFonts } from 'expo-font';
-import image from "./assets/search.png";
+import image from "../assets/search.png";
 
+import {Link} from "expo-router"
 
-export default function App() {
+export default function Page() {
   const [userInput, setUserInput] = useState('');
 
   const [loaded] = useFonts({
-    ProductBold: require('./assets/fonts/product-sans-bold.ttf'),
-    ProductRegular: require('./assets/fonts/product-sans-regular.ttf'),
+    ProductBold: require('../assets/fonts/product-sans-bold.ttf'),
+    ProductRegular: require('../assets/fonts/product-sans-regular.ttf'),
   });
   if (!loaded) {
     return null;
@@ -20,16 +21,16 @@ export default function App() {
       <Text style={styles.title}>Google</Text>
       <View style={styles.containerInput}>
         <TextInput style={styles.input}
-        onChangeText={(userInput) => {setUserInput(userInput); console.log(userInput)}}
-        >
-        </TextInput>
+        onChangeText={(userInput) => {setUserInput(userInput)}}
+        />
       </View>
-
       <Image source={image}  style={styles.image}></Image>
+      <Link href="/result">J'ai de la chance</Link>
       <StatusBar style="auto" />
     </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
