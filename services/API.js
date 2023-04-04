@@ -32,7 +32,7 @@ class API {
         method,
         body: data,
       });
-      console.log(api + route);
+    //   console.log(api + route);
 
       /*if (response.status === 401) {
         AccessToken.remove();

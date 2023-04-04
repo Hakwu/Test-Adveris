@@ -1,33 +1,42 @@
-import { StyleSheet, Text, View, Button } from "react-native";
+import { StyleSheet, Text, View, Button, FlatList, ActivityIndicator } from "react-native";
 import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from "expo-router"
 import { usePathname } from "expo-router";
+
+import ResultItem from './ResultItem';
+
 
 import Backend from "../services/Backend";
 
 export default function Result({input}) {
   const pathname = usePathname();
+  const [result, setResult] = useState(null);
 
     useEffect(() => {
-      console.log(pathname)
-      const fetchProfile = async () => {
+      const fetchResult = async () => {
           const response = await Backend.search('Apple');
           if (response.status === 200) {
-            console.log(response.data.products)
+            setResult(response.data)
+            // console.log(response.data.products[0].thumbnail)
           }
       }
 
-      fetchProfile();
+      fetchResult();
   }, []);
     const router = useRouter();
   return (
+    (!result ? <ActivityIndicator size="small" color="white" /> :
     <View style={styles.container}>
-      <View style={styles.main}>
-        <Text style={styles.title}>Hello World</Text>
-        <Text style={styles.subtitle}>Result.</Text>
-        <Button onPress={() => router.back()} title="Go back"></Button>
+      <View style={{position:'absolute',top:50,width:100+'%', height:5+'%', backgroundColor:'grey', display:'flex', flexDirection:'row', flexWrap:'wrap', justifyContent:'space-evenly'}}>
+        <Button onPress={() => router.back()} title="<"></Button>
+        <Text style={{color:'white', fontSize:10}}>Resultats ({result.total})</Text>
       </View>
-    </View>
+      <FlatList data={result}
+      renderItem={({ item }) => <ResultItem item={result} />}
+      >
+
+      </FlatList>
+    </View>)
   );
 }
 
@@ -35,13 +44,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    padding: 24,
   },
   main: {
     flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
+
   },
   title: {
     fontSize: 64,
